@@ -16,5 +16,22 @@ CHIP Mux4Way16 {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    // We can use a Mux16 w/ sel[0] to determine if a
+    // or b should be selected, see sel[0] in rows 1 and
+    // 2 below
+    Mux16(a=a, b=b, sel=sel[0], out=aORb);
+
+    // We can do the same thing with c and d
+    Mux16(a=c, b=d, sel=sel[0], out=cORd);
+
+    // Now we use Mux16 with the previous results and
+    // the sel[1] bit in order to determine which of them
+    // to choose
+    Mux16(a=aORb, b=cORd, sel=sel[1], out=out);
 }
+
+// sel[1] sel[0]  z
+// 0      0       a
+// 0      1       b
+// 1      0       c
+// 1      1       d
